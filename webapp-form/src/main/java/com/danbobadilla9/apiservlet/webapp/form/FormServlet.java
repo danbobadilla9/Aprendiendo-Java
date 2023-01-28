@@ -8,15 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @WebServlet("/registro")
 public class FormServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
@@ -29,49 +27,49 @@ public class FormServlet extends HttpServlet {
         String habilitar = req.getParameter("habilitar");
         String secreto = req.getParameter("secreto");
 
-        List<String> errores = new ArrayList<>();
+        Map<String,String> errores = new HashMap<>();
 
-        if(username == null || username.isBlank()){
-            errores.add("El username es requerido!");
+        if (username == null || username.isBlank()) {
+            errores.put("username","El username es requerido!");
         }
 
-        if(password == null || password.isBlank()){
-            errores.add("El passwrod no puede ser vacio!");
+        if (password == null || password.isBlank()) {
+            errores.put("password","El passwrod no puede ser vacio!");
         }
 
-        if(email == null || email.contains("@")){
-            errores.add("El email es requerido y debe tener un formato de correo");
+        if (email == null || email.contains("@")) {
+            errores.put("email","El email es requerido y debe tener un formato de correo");
         }
 
-        if(pais == null || pais.isBlank()){
-            errores.add("El pais es requerido!");
+        if (pais == null || pais.isBlank()) {
+            errores.put("pais","El pais es requerido!");
         }
 
-        if(lenguajes == null || lenguajes.length == 0){
-            errores.add("Debe seleccionar al menos un tema");
+        if (lenguajes == null || lenguajes.length == 0) {
+            errores.put("lenguajes","Debe seleccionar al menos un tema");
         }
 
-        if(roles == null || roles.length == 0){
-            errores.add("Debe seleccionar al menos un role!");
+        if (roles == null || roles.length == 0) {
+            errores.put("roles","Debe seleccionar al menos un role!");
         }
 
-        if( idioma == null){
-            errores.add("Debe seleccionar un idioma!");
+        if (idioma == null) {
+            errores.put("idioma","Debe seleccionar un idioma!");
         }
 
-        try (PrintWriter out = resp.getWriter()) {
+        if (errores.isEmpty()) {
+            try (PrintWriter out = resp.getWriter()) {
 
-            out.print("<!DOCTYPE html>");
-            out.print("<html>");
-            out.print("   <head>");
-            out.print("         <meta charset=\"UTF-8\">");
-            out.print("         <title>Resultado form</title>");
-            out.print("   </head>");
-            out.print("   <body>");
-            out.print("         <h1>Resultado form!</h1>");
-            out.print("         <ul>");
+                out.print("<!DOCTYPE html>");
+                out.print("<html>");
+                out.print("   <head>");
+                out.print("         <meta charset=\"UTF-8\">");
+                out.print("         <title>Resultado form</title>");
+                out.print("   </head>");
+                out.print("   <body>");
+                out.print("         <h1>Resultado form!</h1>");
+                out.print("         <ul>");
 
-            if(errores.isEmpty()) {
 
                 out.print("             <li> Username: " + username + "</li>");
                 out.print("             <li> Password: " + password + "</li>");
@@ -93,39 +91,18 @@ public class FormServlet extends HttpServlet {
                 out.print("             <li>Idioma: " + idioma + "</li>");
                 out.print("             <li>Habilitado: " + habilitar + "</li>");
                 out.print("             <li>Secreto: " + secreto + "</li>");
-            }else{
-                errores.forEach( error -> {
+                out.print("         </ul>");
+                out.print("   </body>");
+                out.print("</html>");
+            }
+        } else {
+                /*errores.forEach( error -> {
                     out.print("<li>"+error+"</li>");
                 });
-                out.print("<p><a href=\"/webapp-form\">volver</a></p>");
-            }
-            out.print("         </ul>");
-            out.print("   </body>");
-            out.print("</html>");
+                out.print("<p><a href=\"/webapp-form\">volver</a></p>");*/
+            req.setAttribute("errores", errores);//Permite pasar datos a un jsp o otro servlet
+            getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);//indicamos donde se encuentra el jsp
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
