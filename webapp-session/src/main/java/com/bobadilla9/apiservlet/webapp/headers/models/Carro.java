@@ -31,4 +31,43 @@ public class Carro {
     public List<ItemCarro> getItems() {
         return items;
     }
+
+    public int getTotal(){
+        return items.stream().mapToInt(ItemCarro::getImporte).sum();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
