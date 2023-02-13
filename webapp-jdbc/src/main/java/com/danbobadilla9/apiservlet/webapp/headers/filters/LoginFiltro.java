@@ -23,4 +23,26 @@ public class LoginFiltro implements Filter {
                     "Lo sentimos no estas autorizado para ingresar a esta pagina!");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
