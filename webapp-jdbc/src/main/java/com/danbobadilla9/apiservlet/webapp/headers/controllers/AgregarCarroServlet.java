@@ -2,6 +2,7 @@ package com.danbobadilla9.apiservlet.webapp.headers.controllers;
 
 import com.danbobadilla9.apiservlet.webapp.headers.models.ItemCarro;
 import com.danbobadilla9.apiservlet.webapp.headers.services.ProductoService;
+import com.danbobadilla9.apiservlet.webapp.headers.services.ProductoServiceJdbcImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,6 +14,7 @@ import com.danbobadilla9.apiservlet.webapp.headers.models.Producto;
 import com.danbobadilla9.apiservlet.webapp.headers.services.ProductoServiceImpl;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Optional;
 
 @WebServlet("/carro/agregar")
@@ -21,7 +23,8 @@ public class AgregarCarroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = Long.parseLong(req.getParameter("id"));
-        ProductoService service = new ProductoServiceImpl();
+        Connection conn = (Connection) req.getAttribute("conn");
+        ProductoService service = new ProductoServiceJdbcImpl(conn);
         Optional<Producto> producto = service.porId(id);
         if (producto.isPresent()) {
             ItemCarro item = new ItemCarro(1, producto.get());

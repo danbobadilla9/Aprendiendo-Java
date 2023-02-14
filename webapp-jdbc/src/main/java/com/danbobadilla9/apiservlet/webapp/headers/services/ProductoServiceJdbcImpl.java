@@ -11,7 +11,9 @@ import java.util.Optional;
 public class ProductoServiceJdbcImpl implements ProductoService {
     private ProductoRepositoryJDBCImple repositoryJdbc;
 
-    public void ProductoServiceJdbcImpl(Connection connection){
+
+
+    public  ProductoServiceJdbcImpl(Connection connection){
         this.repositoryJdbc = new ProductoRepositoryJDBCImple(connection);
     }
 
